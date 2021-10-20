@@ -32,7 +32,7 @@ export const main = Reach.App(() => {
     });
     Bob.publish(faceBob);
 
-    const outcome = 1;  // 0: bob wins 1: alice wins
+    const outcome = (faceAlice == faceBob) ? 1 : 0;  // 0: bob wins 1: alice wins
     commit();
     
     each([Alice, Bob], () => {
