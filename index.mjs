@@ -11,22 +11,32 @@ const ctcAlice = accAlice.deploy(backend);
 const ctcBob = accBob.attach(backend, ctcAlice.getInfo());
 
 const FACE = ['Heads', 'Tails'];
-const COIN = ['HEADS', 'TAILS'];
+const COIN = ['Heads', 'Tails'];
 const OUTCOME = ['Bob wins', 'Alice wins'];
 const Player = (Who) => ({
     chooseFace: () => {
+        let faceName = "";
         const face = Math.floor(Math.random() * 2);
         console.log(`${Who} chose ${FACE[face]}`);
-        return face;
+        console.log(`The constant face is ${face}`);
+        if (face == 0) {
+            faceName = "Heads";
+        } else {
+            faceName = "Tails";
+        }
+        return faceName;
     },
     tossCoin: () => {
-        x = (Math.floor(Math.random() * 2) ==0);
-        if (x) {
-            outcome("HEADS");
+        let coinName = "";
+        const coin = (Math.floor(Math.random() * 2) == 0);
+        if (coin) { 
+            coinName = "Heads";
         } else {
-            outcome("TAILS");
+            coinName = "Tails";
         }
-        console.log(`The coin flip revea;s ${outcome}`);
+        console.log(`The coin flip reveals ${coinName}`);
+        console.log(`The coin number is ${coin}`);
+        return coinName;
     },
     seeOutcome: (outcome) => {
         console.log(`${Who} saw outcome ${OUTCOME[outcome]}`);
@@ -44,3 +54,7 @@ await Promise.all([
     }),
 ]);
 })(); // <-- Don't forget these!
+
+// console.log("faceAlice is: " + faceAlice);
+// console.log("The tossResult is: " + tossResult);
+// console.log("The outcome value is: " + outcome);

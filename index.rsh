@@ -3,8 +3,8 @@
 // Create Player parent class
 
 const Player = {
-    chooseFace: Fun([], UInt),
-    tossCoin: Fun([], UInt),
+    chooseFace: Fun([], Bytes(6)),
+    tossCoin: Fun([], Bytes(6)),
     seeOutcome: Fun([UInt], Null),
 };
 
@@ -28,11 +28,12 @@ export const main = Reach.App(() => {
     commit();
 
     Bob.only(() => {
-        const faceBob = declassify(interact.chooseFace());
+        //const faceBob = declassify(interact.chooseFace());
+        const tossResult = declassify(interact.tossCoin());
     });
-    Bob.publish(faceBob);
+    Bob.publish(tossResult);
 
-    const outcome = (faceAlice == faceBob) ? 1 : 0;  // 0: bob wins 1: alice wins
+    const outcome = (faceAlice == tossResult) ? 1 : 0;  // 0: bob wins 1: alice wins
     commit();
     
     each([Alice, Bob], () => {
