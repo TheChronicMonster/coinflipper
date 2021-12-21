@@ -12,12 +12,10 @@ const Player = {
 
 export const main = Reach.App(() => {
     const Caller = Participant('Caller', {
-        // interface here
         ...Player,
         wager: UInt,
     });
     const Flipper = Participant('Flipper', {
-        // interface here
         ...Player,
         acceptWager: Fun([UInt], Null),
     });
@@ -33,7 +31,6 @@ export const main = Reach.App(() => {
 
     Flipper.only(() => {
         interact.acceptWager(wager);
-        //const faceFlipper = declassify(interact.chooseFace());
         const tossResult = declassify(interact.tossCoin());
     });
     Flipper.publish(tossResult)

@@ -45,11 +45,9 @@ const Player = (Who) => ({
 
 await Promise.all([
     backend.Caller(ctcCaller, {
-    // implement Caller's interact object here
         ...Player('Caller'),
     }),
     backend.Flipper(ctcFlipper, {
-    // implement Flipper's interact object here
         ...Player('Flipper'),
     }),
 ]);

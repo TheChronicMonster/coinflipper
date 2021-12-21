@@ -4,7 +4,6 @@ menuItem: mi-docs
 
 # Coin Flipper
 
-<<<<<<< HEAD
 # Introduction
 
 This tutorial walks you through how to build a command-line version of a decentralized application (DApp) that simulates a Coin Flip and allows two players to bet if the result will be heads or tails. 
@@ -17,7 +16,7 @@ By the end of this tutorial you will:
 
 1. Understand how to initialize participants.
 2. Communicate data between the backend and the frontend.
-3. Build a Reach command-line DApp.
+3. Build a Reach command-line dApp.
 
 ## Overview
 
@@ -49,7 +48,7 @@ $ cp starter/index.mjs current/index.mjs
 ## Review index.mjs starter
 
 ``` js
-load: https://github.com/TheChronicMonster/coinflipper/blob/main/starter/index.mjs
+load: https://github.com/TheChronicMonster/coinflipper/blob/main/coin0/index.mjs
 ```
 
 Let's take a look through this starter code:
@@ -75,7 +74,7 @@ load: https://github.com/TheChronicMonster/coinflipper/blob/main/starter/index.r
 
 Let's look at the Reach code:
 
-* Line 1: Instructs the compiler to use Reach version 0.1.0. This is the first line in every Reach program.
+* Line 1: Instructs the compiler to use Reach version 0.1.x. This is the first line in every Reach program.
 * Line 3: This inializes the standard Reach application. It is the main export of the program and is what the complier looks at when compiling. 
 * Line 4 - 9: Specifies two participants to represent players in the DApp. Caller and Flipper are common participant names in cybersecurity exercises.
 * Line 10: Finalizes the particpant and any other options and marks the deployment of the Reach program.
@@ -100,9 +99,9 @@ When creating a Reach application, it's important to think about the participant
 
 1. For this DApp, there will be two participants betting on a coin flip.
 
-2. Caller (Participant A) will deploy the DApp and choose the face of the coin to bet on. 
+2. Caller (the contract originator) will deploy the DApp and choose the face of the coin to bet on. 
 
-3. Flipper (Participant B) will connect to the contract, confirm the face choice, and set the wager amount.
+3. Flipper will connect to the contract, confirm the face choice, and set the wager amount.
 
 4. Caller will confirm the wager amount and both participants will see the face and wager confirmations.
 
@@ -147,11 +146,9 @@ const Player = {
 
 export const main = Reach.App(() => {
     const Caller = Participant('Caller', {
-        // interface here
         ...Player,
     });
     const Flipper = Participant('Flipper', {
-        // interface here
         ...Player,
     });
     deploy();
@@ -165,7 +162,7 @@ Line 13 - 21: Caller and Flipper will be able to interact with the front-end bec
 
 Let's jump over to _index.mjs_ to add two lines in the interact object.
 
-Find the Promise `await Promise.all([...])` so that we can instantiate the implementations of Caller and Flipper in each of their backends. The following addition will allow the frontend participants to interact with the backend.
+Find the Promise `await Promise.all([...])` so that we can create Caller and Flipper in each of their backends. The following addition will allow the frontend participants to interact with the backend.
 
 ``` js
 await Promise.all([
@@ -182,7 +179,7 @@ The Participant Interact Interface is the interface that allows participants to 
 
 This is a core component of any Reach program. The Participant Interact Interface is made up of participants and participant classes. Each participant name must be unique.
 
-It is common in cryptology to name participants in order of Caller, Flipper, Carol, Dave, etc. An eavesdropper is named Eve, malicious attackers are named Mallory, Intruders are known as Trudy, Whistle-blowers are Wendy, and provers and verifiers are Peggy and Victor, but cryptographers who are also lovers of popular game shows may use Pat and Vanna. _[source](http://www.nancy.cc/2016/08/23/cryptography-names-alice-bob-eve/)_
+It is common in cryptology to name participants in order of Alice, Bob, Carol, Dave, etc. An eavesdropper is named Eve, malicious attackers are named Mallory, Intruders are known as Trudy, Whistle-blowers are Wendy, and provers and verifiers are Peggy and Victor, but cryptographers who are also lovers of popular game shows may use Pat and Vanna. _[source](http://www.nancy.cc/2016/08/23/cryptography-names-alice-bob-eve/)_
 
 Now that we've defined our methods for the inferface in the reach file, let's add the objects to our Player class.
 
@@ -246,6 +243,8 @@ Line 4 - 8: is an if/else statement that assigns the value of "Heads" or "Tails"
 Line 9: Prints the outcome of the flip as "Heads" or "Tails"
 Line 10: Prints the outcome of the flip as "true" or "false"
 
+Lines 9 and 10 help us understand how we can use a boolean to output a string. In our implementation, even though coin is a 0 or 1, Reach understands 0 as false and 1 as true. The integers are necessary so the call and toss result can be mathematicaly compared in the backend, but our output needs to be a string because tossCoin and chooseFace expects an output type of byte. We use the if statement to convert the boolean into a string to satisfy the output parameter. 
+
 Finally, let's create the `seeOutcome` object, on the next line after the `tossCoin` object closes.
 
 ``` js
@@ -266,6 +265,8 @@ These methods and property are crucial to participant interaction.
 
 --------
 **Terminology**
+The following methods are all critical to Reach development. You don't need an expert understanding of these, at this time, but you should be aware of their purpose.
+
 [declassify](https://docs.reach.sh/ref-programs-local.html#%28reach._%28%28declassify%29%29%29): declassifies a given argument
 
 [commit](https://docs.reach.sh/ref-programs-consensus.html#%28reach._%28%28commit%29%29%29): ends the consensus step and allows for additional local steps
@@ -391,7 +392,7 @@ export const main = Reach.App(() => {
 Line 12: Adds the `wager` integer value
 Line 16: Flipper is given an `acceptWager` method which can accept `wager` as a parameter and returns Null.
 
-Now we'll update Caller so that she'll be able to declassify her wager amount, publish her wager to the consensus network and pay.
+Now, we'll update Caller so that she'll be able to declassify her wager amount, publish her wager to the consensus network and pay.
 
 ``` js
 Caller.only(() => {
@@ -507,6 +508,10 @@ Lines 2 - 4: The outcome determines who receives a payout. If the outcome is equ
 Lines 5 - 6: Transfer money according to the outcomes in lines 2 - 4. 
 Line 7: The commit method commits the state of the applicaiton and publishes the results of the outcome to the participants. 
 
+We can remove some of the unnecessary console messages, now that we understand how Reach utilizes our math.
+
+Remove `console.log(`The constant face is ${face}`);` from chooseFace and `console.log(`The coin number is ${coin}`);` from tossCoin. 
+
 You can now run the program with `$ reach run`. Your results may vary as the program acts randomly every time. 
 
 Here are three of my results.
@@ -514,10 +519,8 @@ Here are three of my results.
 ```bash
 $ reach run
 Caller chose Tails
-The constant face is 1
 Flipper accepts the wager of 5.
 The coin flip reveals Tails
-The coin number is false
 Flipper saw outcome Caller wins
 Caller saw outcome Caller wins
 Caller went from 10 to 14.996.
@@ -527,10 +530,8 @@ Flipper went from 10 to 4.996.
 ``` bash
 $ reach run
 Caller chose Tails
-The constant face is 1
 Flipper accepts the wager of 5.
 The coin flip reveals Tails
-The coin number is false
 Flipper saw outcome Caller wins
 Caller saw outcome Caller wins
 Caller went from 10 to 14.996.
@@ -540,10 +541,8 @@ Flipper went from 10 to 4.996.
 ``` bash
 $ reach run
 Caller chose Tails
-The constant face is 1
 Flipper accepts the wager of 5.
 The coin flip reveals Heads
-The coin number is true
 Flipper saw outcome Flipper wins
 Caller saw outcome Flipper wins
 Caller went from 10 to 4.996.
@@ -551,6 +550,5 @@ Flipper went from 10 to 14.996.
 ```
 
 Flipper didn't do as well once we began to wager our coin flips. Some people get nervous once crypto is involved. 
-=======
-<span style="color:red;">Under Construction</span>
->>>>>>> ed083b737346f3469102bcc8cfc18e5811693585
+
+At this point, you can understand how features can be incrementally added in a Reach program. To add a new feature, a Reach developer simply adds the function to the participant interact interface, then builds that functionality in the frontend. Participants are then able to interact with those functions as dictated by you, the Reach developer.

@@ -23,7 +23,6 @@ const Player = (Who) => ({
         let faceName = "";
         const face = Math.floor(Math.random() * 2);
         console.log(`${Who} chose ${FACE[face]}`);
-        console.log(`The constant face is ${face}`);
         if (face == 0) {
             faceName = "Heads";
         } else {
@@ -40,7 +39,6 @@ const Player = (Who) => ({
             coinName = "Tails";
         }
         console.log(`The coin flip reveals ${coinName}`);
-        console.log(`The coin number is ${coin}`);
         return coinName;
     },
     seeOutcome: (outcome) => {
@@ -50,12 +48,10 @@ const Player = (Who) => ({
 
 await Promise.all([
     backend.Caller(ctcCaller, {
-    // implement Caller's interact object here
         ...Player('Caller'),
         wager: stdlib.parseCurrency(5),
     }),
     backend.Flipper(ctcFlipper, {
-    // implement Flipper's interact object here
         ...Player('Flipper'),
         acceptWager: (amt) => {
             console.log(`Flipper accepts the wager of ${fmt(amt)}.`);

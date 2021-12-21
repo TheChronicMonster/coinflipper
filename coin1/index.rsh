@@ -8,11 +8,9 @@ const Player = {
 
 export const main = Reach.App(() => {
     const Caller = Participant('Caller', {
-        // interface here
         ...Player,
     });
     const Flipper = Participant('Flipper', {
-        // interface here
         ...Player,
     });
     deploy();
