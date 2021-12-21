@@ -1,12 +1,10 @@
 'reach 0.1'
 
-// instantiate two players
-
 export const main = Reach.App(() => {
-    const Alice = Participant('Alice', {
+    const Caller = Participant('Caller', {
         // interface here
     });
-    const Bob = Participant('Bob', {
+    const Flipper = Participant('Flipper', {
         // interface here
     });
     deploy();

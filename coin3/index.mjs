@@ -4,15 +4,20 @@ const stdlib = loadStdlib(process.env);
     
 (async () => {
 const startingBalance = stdlib.parseCurrency(10);
-const accAlice = await stdlib.newTestAccount(startingBalance);
-const accBob = await stdlib.newTestAccount(startingBalance);
+const accCaller = await stdlib.newTestAccount(startingBalance);
+const accFlipper = await stdlib.newTestAccount(startingBalance);
     
-const ctcAlice = accAlice.deploy(backend);
-const ctcBob = accBob.attach(backend, ctcAlice.getInfo());
+const fmt = (x) => stdlib.formatCurrency(x, 4);
+const getBalance = async (who) => fmt(await stdlib.balanceOf(who));
+const beforeCaller = await getBalance(accCaller);
+const beforeFlipper = await getBalance(accFlipper);
+
+const ctcCaller = accCaller.contract(backend);
+const ctcFlipper = accFlipper.contract(backend, ctcCaller.getInfo());
 
 const FACE = ['Heads', 'Tails'];
 const COIN = ['Heads', 'Tails'];
-const OUTCOME = ['Bob wins', 'Alice wins'];
+const OUTCOME = ['Flipper wins', 'Caller wins'];
 const Player = (Who) => ({
     chooseFace: () => {
         let faceName = "";
@@ -44,17 +49,28 @@ const Player = (Who) => ({
 });
 
 await Promise.all([
-    backend.Alice(ctcAlice, {
-    // implement Alice's interact object here
-        ...Player('Alice'),
+    backend.Caller(ctcCaller, {
+    // implement Caller's interact object here
+        ...Player('Caller'),
+        wager: stdlib.parseCurrency(5),
     }),
-    backend.Bob(ctcBob, {
-    // implement Bob's interact object here
-        ...Player('Bob'),
+    backend.Flipper(ctcFlipper, {
+    // implement Flipper's interact object here
+        ...Player('Flipper'),
+        acceptWager: (amt) => {
+            console.log(`Flipper accepts the wager of ${fmt(amt)}.`);
+        },
     }),
 ]);
+
+const afterCaller = await getBalance(accCaller);
+const afterFlipper = await getBalance(accFlipper);
+
+console.log(`Caller went from ${beforeCaller} to ${afterCaller}.`);
+console.log(`Flipper went from ${beforeFlipper} to ${afterFlipper}.`);
+
 })(); // <-- Don't forget these!
 
-// console.log("faceAlice is: " + faceAlice);
+// console.log("faceCaller is: " + faceCaller);
 // console.log("The tossResult is: " + tossResult);
 // console.log("The outcome value is: " + outcome);

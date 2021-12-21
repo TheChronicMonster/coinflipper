@@ -1,6 +1,7 @@
-// Automatically generated with Reach 0.1.6
+// Automatically generated with Reach 0.1.6 (fb449c94)
 /* eslint-disable */
 export const _version = '0.1.6';
+export const _versionHash = '0.1.6 (fb449c94)';
 export const _backendVersion = 5;
 
 export function getExports(s) {
@@ -26,22 +27,22 @@ export function _getMaps(s) {
     mapDataTy: ctc0
     };
   };
-export async function Alice(ctcTop, interact) {
+export async function Caller(ctcTop, interact) {
   if (typeof(ctcTop) !== 'object' || ctcTop._initialize === undefined) {
-    return Promise.reject(new Error(`The backend for Alice expects to receive a contract as its first argument.`));}
+    return Promise.reject(new Error(`The backend for Caller expects to receive a contract as its first argument.`));}
   if (typeof(interact) !== 'object') {
-    return Promise.reject(new Error(`The backend for Alice expects to receive an interact object as its second argument.`));}
+    return Promise.reject(new Error(`The backend for Caller expects to receive an interact object as its second argument.`));}
   const ctc = ctcTop._initialize();
   const stdlib = ctc.stdlib;
   
   
   return;
   };
-export async function Bob(ctcTop, interact) {
+export async function Flipper(ctcTop, interact) {
   if (typeof(ctcTop) !== 'object' || ctcTop._initialize === undefined) {
-    return Promise.reject(new Error(`The backend for Bob expects to receive a contract as its first argument.`));}
+    return Promise.reject(new Error(`The backend for Flipper expects to receive a contract as its first argument.`));}
   if (typeof(interact) !== 'object') {
-    return Promise.reject(new Error(`The backend for Bob expects to receive an interact object as its second argument.`));}
+    return Promise.reject(new Error(`The backend for Flipper expects to receive an interact object as its second argument.`));}
   const ctc = ctcTop._initialize();
   const stdlib = ctc.stdlib;
   
@@ -65,14 +66,14 @@ bz alloc
 byte base64()
 app_global_get
 dup
-substring 0 8
-btoi
+int 0
+extract_uint64
 store 1
 dup
-substring 8 16
-btoi
+int 8
+extract_uint64
 store 2
-substring 16 48
+extract 16 32
 store 3
 txn NumAppArgs
 int 3
@@ -80,6 +81,7 @@ int 3
 assert
 txna ApplicationArgs 0
 btoi
+preamble:
 int 0
 assert
 updateState:
@@ -154,6 +156,23 @@ int 1
 const _ETH = {
   ABI: `[
   {
+    "stateMutability": "payable",
+    "type": "fallback"
+  },
+  {
+    "inputs": [],
+    "name": "_reachCreationTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "_reachCurrentState",
     "outputs": [
@@ -189,10 +208,10 @@ const _ETH = {
     "type": "receive"
   }
 ]`,
-  Bytecode: `0x608060405234801561001057600080fd5b506101ea806100206000396000f3fe60806040526004361061002d5760003560e01c80638323075714610039578063ab53f2c61461005c57600080fd5b3661003457005b600080fd5b34801561004557600080fd5b506001546040519081526020015b60405180910390f35b34801561006857600080fd5b5061007161007f565b60405161005392919061011c565b60006060600054600280805461009490610179565b80601f01602080910402602001604051908101604052809291908181526020018280546100c090610179565b801561010d5780601f106100e25761010080835404028352916020019161010d565b820191906000526020600020905b8154815290600101906020018083116100f057829003601f168201915b50505050509050915091509091565b82815260006020604081840152835180604085015260005b8181101561015057858101830151858201606001528201610134565b81811115610162576000606083870101525b50601f01601f191692909201606001949350505050565b600181811c9082168061018d57607f821691505b602082108114156101ae57634e487b7160e01b600052602260045260246000fd5b5091905056fea26469706673582212202c58aeece58251d67213946e85210719c9fe52fe398ae849c4080d86e5bc8bae64736f6c63430008090033`,
-  BytecodeLen: 522,
+  Bytecode: `0x608060405234801561001057600080fd5b50610205806100206000396000f3fe6080604052600436106100355760003560e01c80631e93b0f11461003e5780638323075714610062578063ab53f2c61461007757005b3661003c57005b005b34801561004a57600080fd5b506003545b6040519081526020015b60405180910390f35b34801561006e57600080fd5b5060015461004f565b34801561008357600080fd5b5061008c61009a565b604051610059929190610137565b6000606060005460028080546100af90610194565b80601f01602080910402602001604051908101604052809291908181526020018280546100db90610194565b80156101285780601f106100fd57610100808354040283529160200191610128565b820191906000526020600020905b81548152906001019060200180831161010b57829003601f168201915b50505050509050915091509091565b82815260006020604081840152835180604085015260005b8181101561016b5785810183015185820160600152820161014f565b8181111561017d576000606083870101525b50601f01601f191692909201606001949350505050565b600181811c908216806101a857607f821691505b602082108114156101c957634e487b7160e01b600052602260045260246000fd5b5091905056fea2646970667358221220a0b6d59c520583740a6055877bfb569bd4304b569e05bbf8960e124dba820d1b64736f6c63430008090033`,
+  BytecodeLen: 549,
   Which: `oD`,
-  version: 4,
+  version: 5,
   views: {
     }
   };
@@ -201,8 +220,8 @@ export const _Connectors = {
   ETH: _ETH
   };
 export const _Participants = {
-  "Alice": Alice,
-  "Bob": Bob
+  "Caller": Caller,
+  "Flipper": Flipper
   };
 export const _APIs = {
   };
