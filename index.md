@@ -16,7 +16,7 @@ By the end of this tutorial you will:
 
 1. Understand how to initialize participants.
 2. Communicate data between the backend and the frontend.
-3. Build a Reach command-line dApp.
+3. Run Reach in the command-line.
 
 ## Overview
 
@@ -77,7 +77,7 @@ Let's look at the Reach code:
 * Line 1: Instructs the compiler to use Reach version 0.1.x. This is the first line in every Reach program.
 * Line 3: This inializes the standard Reach application. It is the main export of the program and is what the complier looks at when compiling. 
 * Line 4 - 9: Specifies two participants to represent players in the DApp. Caller and Flipper are common participant names in cybersecurity exercises.
-* Line 10: Finalizes the particpant and any other options and marks the deployment of the Reach program.
+* Line 10: Finalizes the participant and any other options and marks the deployment of the Reach program.
 
 # Run the DApp
 
@@ -128,6 +128,8 @@ const Player = (Who) => ({
 * Line 2: Creates the coin constant which will be used to simulate the coin flip.
 * Line 3: Creates an outcome constant to reveal who won the coin toss.
 * Line 4: The Player constant which will hold Reach objects (currently empty)
+
+## Create the Participants
 
 Next, we'll edit the reach file, _index.rsh_, so reach can interact with the front-end.
 
@@ -180,6 +182,8 @@ The Participant Interact Interface is the interface that allows participants to 
 This is a core component of any Reach program. The Participant Interact Interface is made up of participants and participant classes. Each participant name must be unique.
 
 It is common in cryptology to name participants in order of Alice, Bob, Carol, Dave, etc. An eavesdropper is named Eve, malicious attackers are named Mallory, Intruders are known as Trudy, Whistle-blowers are Wendy, and provers and verifiers are Peggy and Victor, but cryptographers who are also lovers of popular game shows may use Pat and Vanna. _[source](http://www.nancy.cc/2016/08/23/cryptography-names-alice-bob-eve/)_
+
+## The Player Class
 
 Now that we've defined our methods for the inferface in the reach file, let's add the objects to our Player class.
 
@@ -257,6 +261,8 @@ Line 1: Instantiates the `seeOutcome` object.
 Line 2: Prints a message that the players saw the outcome of the coin toss.
 Line 3: Closes the object.
 
+## Sharing Information
+
 At this point in the program, we have created the basic building blocks of the business logic. The program will run, but information will not be published to the user. 
 
 Our next area of focus will be in _index.rsh_ where we will tell Reach what actions Caller and Flipper are able to perform and what information can be shared. In this section we will be introduced to the `declassify`, `commit`, and `publish` methods, as well as, the `interact` property. 
@@ -321,6 +327,8 @@ Line 10: Flipper publishes the value in `tossResult`
 Line 12: Creates a conditional statement that results in a win for Caller when true and a win for Flipper when false
 Line 15: A local step that each of the participants can perform
 
+## Run the Second Iteration
+
 You can now run the program. Here are results from a few of my playthroughs:
 
 ``` bash
@@ -360,6 +368,8 @@ Caller and Flipper don't need to know one another, and it's not required that th
 Flipping a coin is great, but we can make the game more interesting by YOLOing all our crypto on a coin flip.
 
 # Adding Wagers
+
+## Adding new Functionality
 
 We'll add new functionality to the coin flipper dApp such that participants will be able to make a wager on the coin flip. This will require that we aded a new integer called `wager` for Caller and an `acceptWager` method that can use `wager` as a paramter.
 
@@ -463,6 +473,8 @@ await Promise.all([
 Line 3: Adds all of the common Player methods into Caller's interface
 Line 4: Defines every wager as 5 atomic network token units. Atomic units are always integers.
 
+## Declassifying and Accepting
+
 Flipper's interface object will be updated to show the wager amount and automatically accept it. In a more robust version we will want Flipper to have the ability to decline the wager. For this version, however, Flipper will simply accept.
 
 ``` js
@@ -491,6 +503,8 @@ console.log(`Flipper went from ${beforeFlipper} to ${afterFlipper}.`);
 Lines 1 & 2: Stores the value of the balance for Caller and Flipper
 Lines 3 & 4: Prints the before and after balances for Flipper and Caller
 
+## The Payment Transfer
+
 This completes our updates for our front end. The final step for this portion is to create the payment transfer logic. Return to _index.rsh_ and add this code after Flipper's interface object and before the `each` statement.
 
 ``` js
@@ -511,6 +525,8 @@ Line 7: The commit method commits the state of the applicaiton and publishes the
 We can remove some of the unnecessary console messages, now that we understand how Reach utilizes our math.
 
 Remove `console.log(`The constant face is ${face}`);` from chooseFace and `console.log(`The coin number is ${coin}`);` from tossCoin. 
+
+## Run with Wagers
 
 You can now run the program with `$ reach run`. Your results may vary as the program acts randomly every time. 
 
@@ -551,4 +567,11 @@ Flipper went from 10 to 14.996.
 
 Flipper didn't do as well once we began to wager our coin flips. Some people get nervous once crypto is involved. 
 
+# Review
+
 At this point, you can understand how features can be incrementally added in a Reach program. To add a new feature, a Reach developer simply adds the function to the participant interact interface, then builds that functionality in the frontend. Participants are then able to interact with those functions as dictated by you, the Reach developer.
+
+You've also learned how to build a rudimentary payment system and the basics of participant interaction. In Rock, Paper, Scissors, you'll build a slightly more complex game that will introduce you to knowledge assertions to mathematically verify that players are forced to be honest, timeout attacks, and you'll deploy a web interface.
+
+# Challenge Your Knowledge
+
