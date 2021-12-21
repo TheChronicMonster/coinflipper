@@ -48,7 +48,7 @@ $ cp starter/index.mjs current/index.mjs
 ## Review index.mjs starter
 
 ``` js
-load: https://github.com/TheChronicMonster/coinflipper/blob/main/coin0/index.mjs
+load: https://github.com/TheChronicMonster/coinflipper/blob/main/starter/index.mjs
 ```
 
 Let's take a look through this starter code:
@@ -86,6 +86,10 @@ You now have the basic syntax required to deploy a Reach DApp. Be sure Docker is
 ```$ ./reach run```
 
 Reach will run a Docker container and compile the app. However, at this point in time, the application doesn't do anything so you'll only see diagnostic messages.
+
+## Challenge Your Knowledge
+
+1. 
 
 # Implement Logic
 
